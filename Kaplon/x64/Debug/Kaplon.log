@@ -1,2 +1,10 @@
 ﻿  Kaplon.cpp
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(135,36): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(153,36): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(188,57): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(224,18): warning C4244: "inicjowanie": konwersja z "_Rep" do "int", możliwa utrata danych
+          with
+          [
+              _Rep=__int64
+          ]
   Kaplon.vcxproj -> C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\x64\Debug\Kaplon.exe
