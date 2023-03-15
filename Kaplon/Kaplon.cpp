@@ -8,10 +8,11 @@
 #include <sstream> 
 #include <cstring> 
 #include <chrono>
-#include <windows.h>
+//#include <windows.h>
 #include <iomanip>
 #include <time.h>
 #include <map>
+//#include <OpenXLSX.hpp>
 using namespace std;
 
 
@@ -70,8 +71,9 @@ void saveData(int *numbers, int howManyNumbers) {
 void saveTime(int howManyNumbers, int Time) {
 
     ofstream SAVE("Times.txt", std::ios::app);
-    SAVE << Time << "\n";
+    SAVE << howManyNumbers << "," << Time << "\n";
     SAVE.close();
+
 }
 
 void configIni(int* howManyNumbers, int* numberOfRepetitions)
@@ -119,7 +121,7 @@ void configIni(int* howManyNumbers, int* numberOfRepetitions)
 
     cout << "numberOfRepetitions: " << *numberOfRepetitions << endl;
     cout << "howManyNumbers: " << *howManyNumbers << endl;
-    Sleep(500);
+    //Sleep(500);
 }
 
 void sortowanieBabelkowe(int tab[], int size)
