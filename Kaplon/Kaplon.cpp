@@ -76,7 +76,7 @@ void saveTime(int howManyNumbers, int Time) {
 
 }
 
-void configIni(int* howManyNumbers, int* numberOfRepetitions)
+void configIni(int* numberOfRepetitions, string* sortName)
 {
     ifstream file("config.ini");
 
@@ -108,8 +108,8 @@ void configIni(int* howManyNumbers, int* numberOfRepetitions)
             if (key == "numberOfRepetitions") {
                 *numberOfRepetitions = stoi(value);
             }
-            else if (key == "howManyNumbers") {
-                *howManyNumbers = stoi(value);
+            else if (key == "sortName") {
+                *sortName = value;
             }
         }
 
@@ -120,7 +120,7 @@ void configIni(int* howManyNumbers, int* numberOfRepetitions)
     }
 
     cout << "numberOfRepetitions: " << *numberOfRepetitions << endl;
-    cout << "howManyNumbers: " << *howManyNumbers << endl;
+    cout << "sortName: " << *sortName << endl;
     //Sleep(500);
 }
 
@@ -133,11 +133,7 @@ void sortowanieBabelkowe(int tab[], int size)
             if (tab[j] > tab[j + 1])
                 swap(tab[j], tab[j + 1]);
         }
-
-        loadingBar((float)i / size * 100); // update progress bar
     }
-
-    loadingBar(100); // finish progress bar
 }
 
 void sortowanieWstawianie(int tab[], int size)
@@ -151,11 +147,7 @@ void sortowanieWstawianie(int tab[], int size)
             tab[j + 1] = tab[j];
 
         tab[j + 1] = temp;
-
-        loadingBar((float)i / size * 100); // update progress bar
     }
-
-    loadingBar(100); // finish progress bar
 }
 
 void sortowanieQuick(int tab[], int left, int right)
@@ -187,53 +179,54 @@ void sortowanieQuick(int tab[], int left, int right)
                 progress++;
             }
         }
-        loadingBar((float)progress / (right - left + 1) * 100); // update progress bar
 
     } while (i <= j);
 
     if (left < j) sortowanieQuick(tab, left, j);
 
     if (right > i) sortowanieQuick(tab, i, right);
-
-    if (left == 0 && right) {
-        loadingBar(100); // finish progress bar
-    }
 }
 
 
 int main()
 {
-    int numberOfRepetitions;
-    int howManyNumbers;
-    configIni(&howManyNumbers, &numberOfRepetitions);
+    int numberOfRepetitions = 5;
+    string sortName;
+    int instances[] = { 10, 20, 30, 40, 50, 75, 100, 150, 200, 350, 500, 750, 1000, 1000, 5000, 10000, 12000, 15000, 17000, 20000, 30000, 40000, 50000, 75000, 100000, 150000, 200000, 300000, 400000, 500000, 700000, 900000, 1000000 };
+    configIni(&numberOfRepetitions, &sortName);
+    //loadingData(numbers, howManyNumbers);
 
-    int* numbers = new int[howManyNumbers];
+    for (int x = 0; x < sizeof(instances); x++)
+    {
+        int instacesInLoop = instances[x];
+        int* numbers = new int[instacesInLoop];
 
-    loadingData(numbers, howManyNumbers);
+        for (int i = 0; i < numberOfRepetitions; i++) {
+            int* copy = new int[instacesInLoop];
+            memcpy(copy, numbers, instacesInLoop * sizeof(int)); // create a copy of numbers
 
-    for (int i = 0; i < numberOfRepetitions; i++) {
-        int* copy = new int[howManyNumbers];
-        memcpy(copy, numbers, howManyNumbers * sizeof(int)); // create a copy of numbers
+            // sort the copy of the array using the bubble sort algorithm
+            auto start = chrono::high_resolution_clock::now();
+            sortowanieBabelkowe(copy, instacesInLoop);
+            //sortowanieWstawianie(copy, instacesInLoop);
+            //sortowanieQuick(copy, 0, instacesInLoop);
+            auto end = chrono::high_resolution_clock::now();
 
-        // sort the copy of the array using the bubble sort algorithm
-        auto start = chrono::high_resolution_clock::now();
-        sortowanieBabelkowe(copy, howManyNumbers);
-        //sortowanieWstawianie(copy, howManyNumbers);
-        //rtowanieQuick(copy, 0, howManyNumbers);
-        auto end = chrono::high_resolution_clock::now();
-        
-        // measure the execution time
-        int time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-        cout << "Execution time: " << time << "ms" << endl;
+            // measure the execution time
+            int time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+            // << "Execution time: " << time << "ms" << endl;
 
-        // save the sorted array and the execution time to files
-        saveData(copy, howManyNumbers);
-        saveTime(howManyNumbers, time);
+            // save the sorted array and the execution time to files
+            saveData(copy, instacesInLoop);
+            saveTime(instacesInLoop, time);
 
-        delete[] copy; // free the memory
+            
+            delete[] copy; // free the memory
+        }
+        loadingBar((float)x / sizeof(instances) * 100);
+        delete[] numbers; // free the memory
     }
-
-    delete[] numbers; // free the memory
+    loadingBar(100);
 
     return 0;
 }
