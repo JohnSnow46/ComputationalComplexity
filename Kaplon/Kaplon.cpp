@@ -32,7 +32,7 @@ void loadingBar(int progress) {
     cout << "] " << progress << " %" << endl;
 }
 
-void loadingData(int* numbers, int howManyNumbers) {
+void loadingData(vector<int>& numbers) {
     string STRING;
     string T;
 
@@ -43,23 +43,16 @@ void loadingData(int* numbers, int howManyNumbers) {
         return;
     }
 
-    int rounds = 0;
     while (getline(infile, STRING)) {
         stringstream X(STRING);
         while (getline(X, T, ',')) {
-            if (rounds >= howManyNumbers) {
-                cout << "ilosc liczb: " << howManyNumbers << endl;
-                return;
-            }
-            numbers[rounds] = stoi(T); // STRING to INT
-            rounds++;
+            numbers.push_back(stoi(T)); // STRING to INT
         }
     }
     infile.close();
-
 }
 
-void saveData(int *numbers, int howManyNumbers) {
+void saveData(vector<int> numbers, int howManyNumbers) {
 
     ofstream SAVE("sortedNumbers.txt");
     for (int y = 0; y < howManyNumbers; y++) {
@@ -124,67 +117,58 @@ void configIni(int* numberOfRepetitions, string* sortName)
     //Sleep(500);
 }
 
-void sortowanieBabelkowe(int tab[], int size)
-{
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size - 1; j++)
-        {
-            if (tab[j] > tab[j + 1])
-                swap(tab[j], tab[j + 1]);
-        }
-    }
-}
-
-void sortowanieWstawianie(int tab[], int size)
-{
-    int temp, j;
-    for (int i = 1; i < size; i++)
-    {
-        temp = tab[i];
-
-        for (j = i - 1; j >= 0 && tab[j] > temp; j--)
-            tab[j + 1] = tab[j];
-
-        tab[j + 1] = temp;
-    }
-}
-
-void sortowanieQuick(int tab[], int left, int right)
-{
-    int i = left;
-    int j = right;
-    int x = tab[(left + right) / 2];
-
-    do
-    {
-        while (tab[i] < x)
-            i++;
-
-        while (tab[j] > x)
-            j--;
-
-        if (i <= j)
-        {
-            swap(tab[i], tab[j]);
-
-            i++;
-            j--;
-        }
-
-        // Calculate progress based on sorted elements on the left side
-        int progress = 0;
-        for (int k = left; k < i; k++) {
-            if (tab[k] <= x) {
-                progress++;
+void sortowanieBabelkowe(vector<int>& vec) {
+    int n = vec.size();
+    bool swapped = true;
+    while (swapped) {
+        swapped = false;
+        for (int i = 1; i < n; i++) {
+            if (vec[i - 1] > vec[i]) {
+                swap(vec[i - 1], vec[i]);
+                swapped = true;
             }
         }
+        n--;
+    }
+}
 
-    } while (i <= j);
+void insertionSort(vector<int>& vec) {
+    int size = vec.size();
+    int temp, j;
 
-    if (left < j) sortowanieQuick(tab, left, j);
+    for (int i = 1; i < size; i++) {
+        temp = vec[i];
+        for (j = i - 1; j >= 0 && vec[j] > temp; j--) {
+            vec[j + 1] = vec[j];
+        }
+        vec[j + 1] = temp;
+    }
+}
 
-    if (right > i) sortowanieQuick(tab, i, right);
+void quicksort(vector<int>& arr, int left, int right) {
+    int i = left, j = right;
+    int pivot = arr[(left + right) / 2];
+
+    while (i <= j) {
+        while (arr[i] < pivot) {
+            i++;
+        }
+        while (arr[j] > pivot) {
+            j--;
+        }
+        if (i <= j) {
+            swap(arr[i], arr[j]);
+            i++;
+            j--;
+        }
+    }
+
+    if (left < j) {
+        quicksort(arr, left, j);
+    }
+    if (i < right) {
+        quicksort(arr, i, right);
+    }
 }
 
 
@@ -192,24 +176,46 @@ int main()
 {
     int numberOfRepetitions = 5;
     string sortName;
-    int instances[] = { 10, 20, 30, 40, 50, 75, 100, 150, 200, 350, 500, 750, 1000, 1000, 5000, 10000, 12000, 15000, 17000, 20000, 30000, 40000, 50000, 75000, 100000, 150000, 200000, 300000, 400000, 500000, 700000, 900000, 1000000 };
-    configIni(&numberOfRepetitions, &sortName);
-    //loadingData(numbers, howManyNumbers);
+    vector <int> instances = { 10, 20, 30, 40, 50, 75, 100, 150, 200, 350, 500, 750, 1000, 1000, 5000, 10000, 12000, 15000, 17000, 20000, 30000, 40000, 50000, 75000, 100000, 150000, 200000, 300000, 400000, 500000, 700000, 800000, 1000000 };
+    instances.reserve(instances.size());
 
-    for (int x = 0; x < sizeof(instances); x++)
+    configIni(&numberOfRepetitions, &sortName);
+
+    vector <int> numbers;
+    numbers.reserve(1000000);
+
+    loadingData(numbers);
+
+    for (int x = 0; x < instances.size(); x++)
     {
         int instacesInLoop = instances[x];
-        int* numbers = new int[instacesInLoop];
+
+        //vector<int> copy(numbers.begin(), numbers.begin() + instacesInLoop);
 
         for (int i = 0; i < numberOfRepetitions; i++) {
-            int* copy = new int[instacesInLoop];
-            memcpy(copy, numbers, instacesInLoop * sizeof(int)); // create a copy of numbers
+            
+            vector <int> copy;
+            copy.reserve(1000000);
+
+            copy.assign(numbers.begin(), numbers.end());
+            copy.resize(instacesInLoop);
 
             // sort the copy of the array using the bubble sort algorithm
             auto start = chrono::high_resolution_clock::now();
-            sortowanieBabelkowe(copy, instacesInLoop);
-            //sortowanieWstawianie(copy, instacesInLoop);
-            //sortowanieQuick(copy, 0, instacesInLoop);
+            if (sortName == "Bubble") {
+                sortowanieBabelkowe(copy);
+            }
+            else if (sortName == "Insert") {
+                insertionSort(copy);
+            }
+            else if (sortName == "Quick") {
+                quicksort(copy, 0, copy.size() - 1);
+            }
+            else {
+                cout << "Error: WRONG SORT NAME" << endl;
+                return 0;
+            }
+
             auto end = chrono::high_resolution_clock::now();
 
             // measure the execution time
@@ -220,13 +226,10 @@ int main()
             saveData(copy, instacesInLoop);
             saveTime(instacesInLoop, time);
 
-            
-            delete[] copy; // free the memory
         }
-        loadingBar((float)x / sizeof(instances) * 100);
-        delete[] numbers; // free the memory
+        loadingBar((float) x / sizeof(instances) * 100);
+
     }
-    loadingBar(100);
 
     return 0;
 }
