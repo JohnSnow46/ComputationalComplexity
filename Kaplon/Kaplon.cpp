@@ -145,6 +145,47 @@ void insertionSort(vector<int>& vec) {
     }
 }
 
+void bucketSort(vector<int>& arr) {
+    int n = arr.size();
+    if (n == 0) {
+        return;
+    }
+
+    // Znajdź wartość maksymalną i minimalną
+    int max_val = arr[0], min_val = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max_val) {
+            max_val = arr[i];
+        }
+        if (arr[i] < min_val) {
+            min_val = arr[i];
+        }
+    }
+
+    // Oblicz rozmiar każdego kubełka
+    int bucket_size = ceil((double)(max_val - min_val + 1) / n);
+
+    // Inicjalizuj kubełki
+    vector<vector<int>> buckets(n);
+    for (int i = 0; i < n; i++) {
+        int bucket_idx = (arr[i] - min_val) / bucket_size;
+        buckets[bucket_idx].push_back(arr[i]);
+    }
+
+    // Sortuj każdy kubełek za pomocą Insertion Sort
+    for (int i = 0; i < n; i++) {
+        sort(buckets[i].begin(), buckets[i].end());
+    }
+
+    // Łącz kubełki w jedno posortowane wejście
+    int idx = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < buckets[i].size(); j++) {
+            arr[idx++] = buckets[i][j];
+        }
+    }
+}
+
 void quicksort(vector<int>& arr, int left, int right) {
     int i = left, j = right;
     int pivot = arr[(left + right) / 2];
@@ -210,6 +251,9 @@ int main()
             }
             else if (sortName == "Quick") {
                 quicksort(copy, 0, copy.size() - 1);
+            }
+            else if (sortName == "Bucket") {
+                bucketSort(copy);
             }
             else {
                 cout << "Error: WRONG SORT NAME" << endl;
