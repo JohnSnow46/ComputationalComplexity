@@ -1,2 +1,14 @@
-﻿  LINK : nie znaleziono elementu C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\x64\Debug\Kaplon.exe ani nie został on skompilowany podczas ostatniego konsolidowania przyrostowego; zostanie wykonana pełna konsolidacja
+﻿  Kaplon.cpp
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(123,23): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(138,26): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(151,23): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(168,21): warning C4244: "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(218,23): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(307,51): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(323,22): warning C4244: "inicjowanie": konwersja z "_Rep" do "int", możliwa utrata danych
+          with
+          [
+              _Rep=__int64
+          ]
+C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\Kaplon\Kaplon.cpp(331,55): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
   Kaplon.vcxproj -> C:\Users\frane\Desktop\Kaplon\Kaplon\computational-complexity\x64\Debug\Kaplon.exe
